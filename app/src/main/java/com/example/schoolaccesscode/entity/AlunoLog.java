@@ -45,16 +45,9 @@ public class AlunoLog {
         this.estaNaEscola = estaNaEscola;
     }
 
-    public String entrouOuSaiu(Integer estaNaEscola){
-        if (estaNaEscola == 1){
-            return "saiu";
-        }
-        return "entrou";
-    }
-
     @Override
     public String toString() {
-        String entrouOuSaiu = entrouOuSaiu(estaNaEscola);
-        return ( nome+ " " +entrouOuSaiu+ " as " +data);
+        String status = (estaNaEscola == 1) ? "saiu" : "entrou";
+        return nome + " " + status + " às " + data;
     }
 }

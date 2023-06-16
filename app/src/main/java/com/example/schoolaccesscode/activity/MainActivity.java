@@ -123,24 +123,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void adicionarLog(){
+    private void adicionarLog() {
         aluno = buscarAlunoPorMatricula(matricula.getText().toString());
-        Integer estaNaEscola = verificarSeAlunoEntrouOuSaiu(aluno);
+        Integer numeroDeEntradas = verificarSeAlunoEntrouOuSaiu(aluno);
 
-        AlunoLog alunoLog = new AlunoLog(aluno.getNome(), LocalDateTime.now().withNano(0).format(formatoBrasileiro), estaNaEscola);
+        AlunoLog alunoLog = new AlunoLog(aluno.getNome(), LocalDateTime.now().withNano(0).format(formatoBrasileiro), numeroDeEntradas);
 
         alunoRepository.insertLog(alunoLog);
     }
 
-    private Integer verificarSeAlunoEntrouOuSaiu(Aluno aluno){
-        if (aluno.isEstaNaEscola()){
-            aluno.setEstaNaEscola(false);
-            alunoRepository.update(aluno);
-            return 1;
-        }
-        aluno.setEstaNaEscola(true);
+    private Integer verificarSeAlunoEntrouOuSaiu(Aluno aluno) {
+        aluno.setNumeroDeEntradas(aluno.getNumeroDeEntradas()+1);
         alunoRepository.update(aluno);
-        return 0;
+       if (aluno.getNumeroDeEntradas()%2 == 0){
+           return 0;
+       }
+       return 1;
     }
 
     private void ativarTelaAtencao() {

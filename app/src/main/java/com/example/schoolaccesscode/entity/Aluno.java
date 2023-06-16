@@ -10,19 +10,19 @@ public class Aluno implements Parcelable {
     private String turno;
     private String nomeDoPai;
     private String nomeDaMae;
-    private boolean estaNaEscola;
+    private Integer numeroDeEntradas;
 
     public Aluno() {
     }
 
-    public Aluno(String matricula, String nome, String ano, String turno, String nomeDoPai, String nomeDaMae, boolean estaNaEscola) {
+    public Aluno(String matricula, String nome, String ano, String turno, String nomeDoPai, String nomeDaMae, Integer numeroDeEntradas) {
         this.matricula = matricula;
         this.nome = nome;
         this.ano = ano;
         this.turno = turno;
         this.nomeDoPai = nomeDoPai;
         this.nomeDaMae = nomeDaMae;
-        this.estaNaEscola = estaNaEscola;
+        this.numeroDeEntradas = numeroDeEntradas;
     }
 
     protected Aluno(Parcel in) {
@@ -94,12 +94,12 @@ public class Aluno implements Parcelable {
         this.nomeDaMae = nomeDaMae;
     }
 
-    public boolean isEstaNaEscola() {
-        return estaNaEscola;
+    public Integer getNumeroDeEntradas() {
+        return numeroDeEntradas;
     }
 
-    public void setEstaNaEscola(boolean estaNaEscola) {
-        this.estaNaEscola = estaNaEscola;
+    public void setNumeroDeEntradas(Integer numeroDeEntradas) {
+        this.numeroDeEntradas = numeroDeEntradas;
     }
 
     @Override

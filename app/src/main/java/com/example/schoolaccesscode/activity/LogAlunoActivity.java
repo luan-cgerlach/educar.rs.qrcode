@@ -1,7 +1,11 @@
 package com.example.schoolaccesscode.activity;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
+import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,6 +30,7 @@ public class LogAlunoActivity extends AppCompatActivity {
     private DateTimeFormatter formatoBrasileiro;
     private void inicializarVariaveis() {
         tvLogAluno = findViewById(R.id.tvLogAluno);
+        tvLogAluno.setMovementMethod(new ScrollingMovementMethod());
         stringBuilderLog = new StringBuilder();
         alunoRepository = new AlunoRepository(this);
         listaDeLog = new ArrayList<>();
@@ -40,12 +45,15 @@ public class LogAlunoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_log_aluno);
         inicializarVariaveis();
 
-        listaDeLog = alunoRepository.queryAllLog();
-
-            for (AlunoLog log : listaDeLog) {
-                stringBuilderLog.append(log.toString() + "\n\n");
-            }
-            tvLogAluno.append(stringBuilderLog);
+        preencherRegistroDeEntradas();
     }
 
+    private void preencherRegistroDeEntradas(){
+        listaDeLog = alunoRepository.queryAllLog();
+
+        for (AlunoLog log : listaDeLog) {
+            stringBuilderLog.append(log.toString() + "\n\n");
+        }
+        tvLogAluno.append(stringBuilderLog);
+    }
 }

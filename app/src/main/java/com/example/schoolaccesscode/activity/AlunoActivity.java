@@ -54,7 +54,6 @@ public class AlunoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_aluno);
         inicializarVariaveis();
         preencherLabels();
-        cadastrarTodosAlunos();
 
         Intent intent = getIntent();
         preencherCampos(intent);
@@ -119,20 +118,20 @@ public class AlunoActivity extends AppCompatActivity {
         aluno.setTurno(novoTurno.getText().toString());
         aluno.setNomeDaMae(novoNomeDaMae.getText().toString());
         aluno.setNomeDoPai(novoNomeDoPai.getText().toString());
-        aluno.setEstaNaEscola(false);
+        aluno.setNumeroDeEntradas(0);
         return aluno;
     }
 
     public void cadastrarTodosAlunos(){
-        Aluno aluno1 = new Aluno("5387948", "Eduarda Welter Braun", "3B", "Manhã", "Ademir Braun", "Rozane Welter", false);
-        Aluno aluno2 = new Aluno("5557234", "Estéfhany Regina Theisen Bernardi", "3B", "Manhã", "Mauro Bernardi", "Marisa Theisen", false);
-        Aluno aluno3 = new Aluno("5557235", "Gean Gustavo Kreuz", "3B", "Manhã", "Celso José Kreuz", "Marlise Henz Kreuz", false);
-        Aluno aluno4 = new Aluno("5557239", "Kaiane Thaís Steffens Albino da Rosa", "3B", "Manhã", "Não fornecido", "Andréia Ines Steffens", false);
-        Aluno aluno5 = new Aluno("5557243", "Luiza Eduarda Jung", "3A", "Manhã", "Luis Carlos Jung", "Vânia Maria Brummelhaus", false);
-        Aluno aluno6 = new Aluno("5557252", "Tauhan Arcanjo Babichuck", "3B", "Manhã", "Eduardo Babichuck", "Elisa Helena Mallmann", false);
-        Aluno aluno7 = new Aluno("3207620", "Vinicius Arenhart Kotz", "3A", "Manhã", "Pedro Dionísio Kotz", "Elveni Maria Arenhart", false);
-        Aluno aluno8 = new Aluno("5557261", "Eduardo Grun Deves", "3B", "Manhã", "Marino Antônio Deves", "Sueli Grün", false);
-        Aluno aluno9 = new Aluno("5557241", "Luan Carlos Gerlach", "3B", "Manhã", "Luis Carlos Gerlach", "Joseneia Maria Welter Gerlach", false);
+        Aluno aluno1 = new Aluno("5387948", "Eduarda Welter Braun", "3B", "Manhã", "Ademir Braun", "Rozane Welter", 0);
+        Aluno aluno2 = new Aluno("5557234", "Estéfhany Regina Theisen Bernardi", "3B", "Manhã", "Mauro Bernardi", "Marisa Theisen", 0);
+        Aluno aluno3 = new Aluno("5557235", "Gean Gustavo Kreuz", "3B", "Manhã", "Celso José Kreuz", "Marlise Henz Kreuz", 0);
+        Aluno aluno4 = new Aluno("5557239", "Kaiane Thaís Steffens Albino da Rosa", "3B", "Manhã", "Não fornecido", "Andréia Ines Steffens", 0);
+        Aluno aluno5 = new Aluno("5557243", "Luiza Eduarda Jung", "3A", "Manhã", "Luis Carlos Jung", "Vânia Maria Brummelhaus", 0);
+        Aluno aluno6 = new Aluno("5557252", "Tauhan Arcanjo Babichuck", "3B", "Manhã", "Eduardo Babichuck", "Elisa Helena Mallmann", 0);
+        Aluno aluno7 = new Aluno("3207620", "Vinicius Arenhart Kotz", "3A", "Manhã", "Pedro Dionísio Kotz", "Elveni Maria Arenhart", 0);
+        Aluno aluno8 = new Aluno("5557261", "Eduardo Grun Deves", "3B", "Manhã", "Marino Antônio Deves", "Sueli Grün", 0);
+        Aluno aluno9 = new Aluno("5557241", "Luan Carlos Gerlach", "3B", "Manhã", "Luis Carlos Gerlach", "Joseneia Maria Welter Gerlach", 0);
 
         alunoRepository.insert(aluno1);
         alunoRepository.insert(aluno2);

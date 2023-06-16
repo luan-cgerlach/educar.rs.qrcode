@@ -46,7 +46,7 @@ public class AlunoRepository {
         values.put("turno", aluno.getTurno());
         values.put("nome_do_pai", aluno.getNomeDoPai());
         values.put("nome_da_mae", aluno.getNomeDaMae());
-        values.put("entrou", aluno.isEstaNaEscola() ? 1 : 0);
+        values.put("entrou", aluno.getNumeroDeEntradas());
         return database.insert("aluno", null, values);
     }
 
@@ -60,17 +60,17 @@ public class AlunoRepository {
             String turno = cursor.getString(3);
             String nomeDoPai = cursor.getString(4);
             String nomeDaMae = cursor.getString(5);
-            String entrou = cursor.getString(6);
+            Integer entrou = cursor.getInt(6);
 
-            return new Aluno(matricula, nome, ano, turno, nomeDoPai,nomeDaMae, Boolean.parseBoolean(entrou));
+            return new Aluno(matricula, nome, ano, turno, nomeDoPai,nomeDaMae, entrou);
         }
         return null;
     }
 
     public List<Aluno> queryAll() {
         List<Aluno> listaAlunos = new ArrayList<>();
-
-        Cursor cursor = database.query("aluno", null, null, null, null, null, null);
+        String orderBy = "nome ASC";
+        Cursor cursor = database.query("aluno", null, null, null, null, null, orderBy);
 
         if (cursor.moveToFirst()) {
             do {
@@ -80,9 +80,9 @@ public class AlunoRepository {
                 String turno = cursor.getString(3);
                 String nomeDoPai = cursor.getString(4);
                 String nomeDaMae = cursor.getString(5);
-                String entrou = cursor.getString(6);
+                Integer entrou = cursor.getInt(6);
 
-                Aluno aluno = new Aluno(matricula, nome, ano, turno, nomeDoPai, nomeDaMae, Boolean.parseBoolean(entrou));
+                Aluno aluno = new Aluno(matricula, nome, ano, turno, nomeDoPai, nomeDaMae, entrou);
                 listaAlunos.add(aluno);
             } while (cursor.moveToNext());
         }
@@ -97,7 +97,7 @@ public class AlunoRepository {
         values.put("turno", aluno.getTurno());
         values.put("nome_do_pai", aluno.getNomeDoPai());
         values.put("nome_da_mae", aluno.getNomeDaMae());
-        values.put("entrou", aluno.isEstaNaEscola());
+        values.put("entrou", aluno.getNumeroDeEntradas());
         String[] selectionArgs = {aluno.getMatricula()};
         return database.update("aluno", values, "matricula = ?", selectionArgs);
     }
@@ -126,8 +126,9 @@ public class AlunoRepository {
 
     public List<AlunoLog> queryAllLog() {
         List<AlunoLog> listaAlunosLog = new ArrayList<>();
+        String orderBy = "data DESC";
+        Cursor cursor = database_log.query("log", null, null, null, null, null, orderBy);
 
-        Cursor cursor = database_log.query("log", null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 String nome = cursor.getString(1);

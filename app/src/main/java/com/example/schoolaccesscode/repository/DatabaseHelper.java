@@ -16,7 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + "turno TEXT,"
                     + "nome_do_pai TEXT,"
                     + "nome_da_mae TEXT,"
-                    + "estaNaEscola INTEGER DEFAULT 0"
+                    + "estaNaEscola INTEGER"
                     + ")";
 
     private static final String CREATE_TABLE_LOG =
