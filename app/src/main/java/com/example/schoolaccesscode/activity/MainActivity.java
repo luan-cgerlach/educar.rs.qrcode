@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
     private Integer verificarSeAlunoEntrouOuSaiu(Aluno aluno) {
         aluno.setNumeroDeEntradas(aluno.getNumeroDeEntradas() + 1);
         alunoRepository.atualizarAluno(aluno);
-        return aluno.getNumeroDeEntradas() % 2 == 0 ? 0 : 1; // 0 representa "saiu", 1 representa "entrou"
+        return aluno.getNumeroDeEntradas() % 2 == 0 ? 1 : 0; // retorna 1 se verdadeiro e 0 se falso
     }
 
     @Override

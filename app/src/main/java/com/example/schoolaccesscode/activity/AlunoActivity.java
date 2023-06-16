@@ -54,7 +54,6 @@ public class AlunoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_aluno);
         inicializarVariaveis();
         preencherLabels();
-
         Intent intent = getIntent();
         preencherCampos(intent);
 
