@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.AlunoActivity">
+
+    <EditText
+        android:id="@+id/novoNomeDaMae"
+        android:layout_width="250dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/tvNomeDaMae"
+        app:layout_constraintTop_toBottomOf="@+id/novoNomeDoPai" />
+
+    <EditText
+        android:id="@+id/novoAno"
+        android:layout_width="250dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/tvAno"
+        app:layout_constraintTop_toBottomOf="@+id/novoNome" />
+
+    <EditText
+        android:id="@+id/novoTurno"
+        android:layout_width="250dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/tvTurno"
+        app:layout_constraintTop_toBottomOf="@+id/novoAno" />
+
+    <EditText
+        android:id="@+id/novoNomeDoPai"
+        android:layout_width="250dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/tvNomeDoPai"
+        app:layout_constraintTop_toBottomOf="@+id/novoTurno" />
+
+    <EditText
+        android:id="@+id/novoNome"
+        android:layout_width="250dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/tvNome"
+        app:layout_constraintTop_toBottomOf="@+id/novoMatricula" />
+
+    <TextView
+        android:id="@+id/tvTitulo13"
+        android:layout_width="379dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:text="Cadastrar Novo Aluno"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitulo" />
+
+    <Button
+        android:id="@+id/bSalvar"
+        android:layout_width="259dp"
+        android:layout_height="74dp"
+        android:layout_marginTop="20dp"
+        android:text="Salvar"
+        android:textSize="20sp"
+        app:backgroundTint="#4CAF50"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/novoNomeDaMae" />
+
+    <TextView
+        android:id="@+id/tvTitulo"
+        android:layout_width="379dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:text="ESCOLA JOÃO XXIII"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvAno"
+        android:layout_width="130dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="right"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvNome" />
+
+    <TextView
+        android:id="@+id/tvNovoMatricula"
+        android:layout_width="130dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:gravity="right"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitulo13" />
+
+    <TextView
+        android:id="@+id/tvNome"
+        android:layout_width="130dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="right"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvNovoMatricula" />
+
+    <TextView
+        android:id="@+id/tvTurno"
+        android:layout_width="130dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="right"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAno" />
+
+    <TextView
+        android:id="@+id/tvNomeDaMae"
+        android:layout_width="130dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="right"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvNomeDoPai" />
+
+    <TextView
+        android:id="@+id/tvNomeDoPai"
+        android:layout_width="130dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="right"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTurno" />
+
+    <EditText
+        android:id="@+id/novoMatricula"
+        android:layout_width="250dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:inputType="number"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/tvNovoMatricula"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitulo13" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
