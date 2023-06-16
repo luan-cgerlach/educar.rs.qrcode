@@ -3,9 +3,7 @@ package com.example.schoolaccesscode.activity;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import android.content.Intent;
@@ -22,17 +20,15 @@ import androidx.annotation.Nullable;
 
 import com.example.schoolaccesscode.R;
 import com.example.schoolaccesscode.entity.Aluno;
-import com.example.schoolaccesscode.entity.AlunoLog;
+import com.example.schoolaccesscode.entity.RegistroAluno;
 import com.example.schoolaccesscode.repository.AlunoRepository;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class MainActivity extends AppCompatActivity {
     private static final int QR_CODE_REQUEST_CODE = 1;
     private Aluno aluno;
-    private LocalDateTime data;
     private AlunoRepository alunoRepository;
     private TextView tvMatricula;
     private TextView matricula;
@@ -70,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         tvEditarAluno = findViewById(R.id.tvEditarAluno);
         tvExcluirAluno = findViewById(R.id.tvExcluirAluno);
         aluno = new Aluno();
-        data = LocalDateTime.now();
         formatoBrasileiro = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
         alunoRepository = new AlunoRepository(this);
     }
@@ -84,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         bAcesso.setVisibility(View.INVISIBLE);
         tvEditarAluno.setVisibility(View.INVISIBLE);
         tvExcluirAluno.setVisibility(View.INVISIBLE);
-
         bScanner.setOnClickListener(view -> {
             limparTela();
             Intent qrScannerIntent = new Intent(this, QRScannerActivity.class);
@@ -100,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         tvExcluirAluno.setOnClickListener(View -> {
-            alunoRepository.delete(matricula.getText().toString());
+            alunoRepository.deletarAluno(matricula.getText().toString());
         });
     }
 
@@ -108,48 +102,34 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == QR_CODE_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             String dadosQrCode = data.getStringExtra("qr_code_result");
-            String numeroMatricula = dadosQrCode.substring(dadosQrCode.length()-7, dadosQrCode.length());
+            String numeroMatricula = dadosQrCode.substring(dadosQrCode.length() - 7, dadosQrCode.length());
 
-            Aluno alunoPorId = alunoRepository.queryById(numeroMatricula);
+            Aluno alunoPorId = alunoRepository.buscarAlunoPorId(numeroMatricula);
 
-            if(alunoPorId == null) {
+            if (alunoPorId == null) {
                 Toast.makeText(MainActivity.this, "Aluno não cadastrado!!!", Toast.LENGTH_LONG).show();
-            }else{
+            } else {
                 preencherDadosDoAluno(alunoPorId);
-                adicionarLog();
+                criarRegistroDeEntrada();
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
-    private void adicionarLog() {
+    private void criarRegistroDeEntrada() {
         aluno = buscarAlunoPorMatricula(matricula.getText().toString());
         Integer numeroDeEntradas = verificarSeAlunoEntrouOuSaiu(aluno);
 
-        AlunoLog alunoLog = new AlunoLog(aluno.getNome(), LocalDateTime.now().withNano(0).format(formatoBrasileiro), numeroDeEntradas);
+        RegistroAluno alunoLog = new RegistroAluno(aluno.getNome(), LocalDateTime.now().withNano(0).format(formatoBrasileiro), numeroDeEntradas);
 
-        alunoRepository.insertLog(alunoLog);
+        alunoRepository.inserirRegistroDeEntradaDoAluno(alunoLog);
     }
 
     private Integer verificarSeAlunoEntrouOuSaiu(Aluno aluno) {
-        aluno.setNumeroDeEntradas(aluno.getNumeroDeEntradas()+1);
-        alunoRepository.update(aluno);
-       if (aluno.getNumeroDeEntradas()%2 == 0){
-           return 0;
-       }
-       return 1;
-    }
-
-    private void ativarTelaAtencao() {
-        bAcesso.setBackgroundColor(Color.RED);
-        bScanner.setBackgroundColor(Color.RED);
-        bAcesso.setVisibility(View.VISIBLE);
-    }
-
-    private void ativarTelaPadrao() {
-        bAcesso.setBackgroundColor(Color.GREEN);
-        bScanner.setBackgroundColor(Color.GREEN);
+        aluno.setNumeroDeEntradas(aluno.getNumeroDeEntradas() + 1);
+        alunoRepository.atualizarAluno(aluno);
+        return aluno.getNumeroDeEntradas() % 2 == 0 ? 0 : 1; // 0 representa "saiu", 1 representa "entrou"
     }
 
     @Override
@@ -166,24 +146,24 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         } else if (id == R.id.edit_aluno) {
-            caixaDeDialigoParaExcluirOuEditar("Editar");
+            receberMatriculaParaExcluirOuEditar("Editar");
             return true;
         } else if (id == R.id.remov_aluno) {
-            caixaDeDialigoParaExcluirOuEditar("Excluir");
+            receberMatriculaParaExcluirOuEditar("Excluir");
             return true;
-        }else if (id == R.id.list_aluno) {
+        } else if (id == R.id.list_aluno) {
             Intent intent = new Intent(this, ListaAlunosActivity.class);
             startActivity(intent);
             return true;
-        }else if (id == R.id.log_aluno) {
-            Intent intent = new Intent(this, LogAlunoActivity.class);
+        } else if (id == R.id.log_aluno) {
+            Intent intent = new Intent(this, RegEntradasAlunoActivity.class);
             startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void caixaDeDialigoParaExcluirOuEditar(String excluirOuEditar){
+    public void receberMatriculaParaExcluirOuEditar(String excluirOuEditar) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Digite a matricula do aluno");
 
@@ -194,9 +174,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String matricula = input.getText().toString();
-                if(excluirOuEditar.equals("Excluir")) {
+
+                // Usa a string `excluirOuEditar` para ver se deve excluir ou editar
+                if (excluirOuEditar.equals("Excluir")) {
                     excluirAluno(buscarAlunoPorMatricula(matricula));
-                }else{
+                } else {
                     editarAluno(buscarAlunoPorMatricula(matricula));
                 }
             }
@@ -210,50 +192,49 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
-    public void editarAluno(Aluno aluno){
+    public void editarAluno(Aluno aluno) {
         Intent intent = new Intent(this, AlunoActivity.class);
         intent.putExtra("aluno", aluno);
         startActivity(intent);
     }
 
     public void excluirAluno(Aluno aluno) {
-            if (aluno != null) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Confirmação de exclusão");
-                builder.setMessage("Deseja excluir o aluno " + aluno.getNome() + "?");
-                builder.setPositiveButton("Excluir", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            alunoRepository.delete(aluno.getMatricula());
-                            Toast.makeText(getApplicationContext(), "Aluno excluído com sucesso", Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            Toast.makeText(getApplicationContext(), "Erro ao excluir aluno", Toast.LENGTH_SHORT).show();
-                            Log.e("Exclusão de Aluno", e.getMessage());
-                        }
+        if (aluno != null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Confirmação de exclusão");
+            builder.setMessage("Deseja excluir o aluno " + aluno.getNome() + "?");
+            builder.setPositiveButton("Excluir", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    try {
+                        alunoRepository.deletarAluno(aluno.getMatricula());
+                        Toast.makeText(getApplicationContext(), "Aluno excluído com sucesso", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "Erro ao excluir aluno", Toast.LENGTH_SHORT).show();
+                        Log.e("Exclusão de Aluno", e.getMessage());
                     }
-                });
-                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            } else {
-                Toast.makeText(getApplicationContext(), "Aluno não encontrado", Toast.LENGTH_SHORT).show();
-            }
-    }
-
-    private Aluno buscarAlunoPorMatricula(String matricula) {
-        if(alunoRepository.queryById(matricula) == null){
-            return null;
-        }else {
-            return alunoRepository.queryById(matricula);
+                }
+            });
+            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Aluno não encontrado", Toast.LENGTH_SHORT).show();
         }
     }
 
+    private Aluno buscarAlunoPorMatricula(String matricula) {
+        if (alunoRepository.buscarAlunoPorId(matricula) == null) {
+            return null;
+        } else {
+            return alunoRepository.buscarAlunoPorId(matricula);
+        }
+    }
 
     private void preencherDadosDoAluno(Aluno aluno) {
         tvMatricula.setText("Matrícula:");
@@ -290,10 +271,5 @@ public class MainActivity extends AppCompatActivity {
         tvEditarAluno.setVisibility(View.INVISIBLE);
         tvExcluirAluno.setVisibility(View.INVISIBLE);
     }
-
-    private void negarAcesso(){
-        Toast.makeText(MainActivity.this, "Aluno excluído com sucesso", Toast.LENGTH_SHORT).show();
-    }
-
 }
 

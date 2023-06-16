@@ -11,6 +11,7 @@ import com.example.schoolaccesscode.repository.AlunoRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+
 public class ListaAlunosActivity extends AppCompatActivity {
     private TextView tvListaMatricula;
     private TextView tvListaNome;
@@ -38,26 +39,22 @@ public class ListaAlunosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lista_alunos);
 
         inicializarVariaveis();
-        listaAlunos = alunoRepository.queryAll();
+        listaAlunos = alunoRepository.buscarTodosAlunos();
 
-        cabecalhoDaTabela();
+        criarCabecalhoDaTabela();
         for (Aluno aluno : listaAlunos) {
-            stringBuilderMatricula.append(aluno.getMatricula() +"\n\n");
-            stringBuilderNome.append(aluno.getNome() +"\n\n");
-            stringBuilderAno.append(aluno.getAno() +"\n\n");
+            stringBuilderMatricula.append(aluno.getMatricula() + "\n\n");
+            stringBuilderNome.append(aluno.getNome() + "\n\n");
+            stringBuilderAno.append(aluno.getAno() + "\n\n");
         }
         tvListaMatricula.append(stringBuilderMatricula);
         tvListaNome.append(stringBuilderNome);
         tvListaAno.append(stringBuilderAno);
     }
 
-    private void cabecalhoDaTabela() {
-        stringBuilderMatricula.append("Matricula \n\n");
+    private void criarCabecalhoDaTabela() {
+        stringBuilderMatricula.append("Matrícula \n\n");
         stringBuilderNome.append("Nome \n\n");
         stringBuilderAno.append("Ano \n\n");
     }
-
 }
-
-
-

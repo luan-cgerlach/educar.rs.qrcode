@@ -4,41 +4,25 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
-import android.provider.ContactsContract;
-import android.widget.Toast;
-
-import androidx.annotation.RequiresApi;
 
 import com.example.schoolaccesscode.entity.Aluno;
-import com.example.schoolaccesscode.entity.AlunoLog;
+import com.example.schoolaccesscode.entity.RegistroAluno;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class AlunoRepository {
 
     private SQLiteDatabase database;
-    private SQLiteDatabase database_log;
-
-    private AlunoLog alunoLog;
-    DateTimeFormatter formatoBrasileiro = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
-
-    private LocalDateTime dateTime;
+    private SQLiteDatabase databaseLog;
 
     public AlunoRepository(Context context) {
         DatabaseHelper dbHelper = new DatabaseHelper(context);
         database = dbHelper.getWritableDatabase();
-        database_log = dbHelper.getWritableDatabase();
+        databaseLog = dbHelper.getWritableDatabase();
     }
 
-    public long insert(Aluno aluno) {
-
+    public long inserirAluno(Aluno aluno) {
         ContentValues values = new ContentValues();
         values.put("matricula", aluno.getMatricula());
         values.put("nome", aluno.getNome());
@@ -50,7 +34,7 @@ public class AlunoRepository {
         return database.insert("aluno", null, values);
     }
 
-    public Aluno queryById(String id) {
+    public Aluno buscarAlunoPorId(String id) {
         String[] selectionArgs = {String.valueOf(id)};
         Cursor cursor = database.query("aluno", null, "matricula = ?", selectionArgs, null, null, null);
         if (cursor.moveToFirst()) {
@@ -62,12 +46,12 @@ public class AlunoRepository {
             String nomeDaMae = cursor.getString(5);
             Integer entrou = cursor.getInt(6);
 
-            return new Aluno(matricula, nome, ano, turno, nomeDoPai,nomeDaMae, entrou);
+            return new Aluno(matricula, nome, ano, turno, nomeDoPai, nomeDaMae, entrou);
         }
         return null;
     }
 
-    public List<Aluno> queryAll() {
+    public List<Aluno> buscarTodosAlunos() {
         List<Aluno> listaAlunos = new ArrayList<>();
         String orderBy = "nome ASC";
         Cursor cursor = database.query("aluno", null, null, null, null, null, orderBy);
@@ -90,7 +74,7 @@ public class AlunoRepository {
         return listaAlunos;
     }
 
-    public long update(Aluno aluno) {
+    public long atualizarAluno(Aluno aluno) {
         ContentValues values = new ContentValues();
         values.put("nome", aluno.getNome());
         values.put("ano", aluno.getAno());
@@ -102,32 +86,32 @@ public class AlunoRepository {
         return database.update("aluno", values, "matricula = ?", selectionArgs);
     }
 
-    public int delete(String id) {
+    public int deletarAluno(String id) {
         try {
             String[] selectionArgs = {String.valueOf(id)};
             return database.delete("aluno", "matricula = ?", selectionArgs);
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
         return 0;
     }
 
-    public void deleteAllAlunos() {
+    public void deletarTodosAlunos() {
         database.delete("aluno", null, null);
     }
 
-    public long insertLog(AlunoLog alunoLog) {
+    public long inserirRegistroDeEntradaDoAluno(RegistroAluno alunoLog) {
         ContentValues values = new ContentValues();
         values.put("nome", alunoLog.getNome());
         values.put("data", alunoLog.getData());
         values.put("entrou", alunoLog.getEntrou());
-        return database_log.insert("log", null, values);
+        return databaseLog.insert("log", null, values);
     }
 
-    public List<AlunoLog> queryAllLog() {
-        List<AlunoLog> listaAlunosLog = new ArrayList<>();
+    public List<RegistroAluno> buscarTodosRegistrosDeEntrada() {
+        List<RegistroAluno> listaAlunosLog = new ArrayList<>();
         String orderBy = "data DESC";
-        Cursor cursor = database_log.query("log", null, null, null, null, null, orderBy);
+        Cursor cursor = databaseLog.query("log", null, null, null, null, null, orderBy);
 
         if (cursor.moveToFirst()) {
             do {
@@ -135,7 +119,7 @@ public class AlunoRepository {
                 String data = (cursor.getString(2));
                 Integer entrou = cursor.getInt(3);
 
-                AlunoLog alunolog = new AlunoLog(nome, data, entrou);
+                RegistroAluno alunolog = new RegistroAluno(nome, data, entrou);
                 listaAlunosLog.add(alunolog);
             } while (cursor.moveToNext());
         }
@@ -143,11 +127,7 @@ public class AlunoRepository {
         return listaAlunosLog;
     }
 
-    public void deleteAllLog() {
-        database_log.delete("log", null, null);
+    public void deletarTodosRegistros() {
+        databaseLog.delete("log", null, null);
     }
-
-
 }
-
-

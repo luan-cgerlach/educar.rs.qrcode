@@ -1,21 +1,14 @@
 package com.example.schoolaccesscode.entity;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-
-public class AlunoLog {
+public class RegistroAluno {
     private String nome;
     private String data;
     private Integer estaNaEscola;
 
-    DateTimeFormatter formatoBrasileiro = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
-
-    public AlunoLog() {
+    public RegistroAluno() {
     }
 
-    public AlunoLog(String nome, String data, Integer entrou) {
+    public RegistroAluno(String nome, String data, Integer entrou) {
         this.nome = nome;
         this.data = data;
         this.estaNaEscola = entrou;

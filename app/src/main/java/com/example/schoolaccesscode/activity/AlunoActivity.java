@@ -16,33 +16,33 @@ import com.example.schoolaccesscode.repository.AlunoRepository;
 public class AlunoActivity extends AppCompatActivity {
     private AlunoRepository alunoRepository;
     private Aluno aluno;
-    private TextView tvNovoMatricula;
+    private TextView tvLabelMatricula;
     private TextView novoMatricula;
-    private TextView tvNome;
+    private TextView tvLabelNome;
     private TextView novoNome;
-    private TextView tvAno;
+    private TextView tvLabelAno;
     private TextView novoAno;
-    private TextView tvTurno;
+    private TextView tvLabelTurno;
     private TextView novoTurno;
-    private TextView tvNomeDoPai;
+    private TextView tvLabelNomeDoPai;
     private TextView novoNomeDoPai;
-    private TextView tvNomeDaMae;
+    private TextView tvLabelNomeDaMae;
     private TextView novoNomeDaMae;
     private Button bSalvar;
 
     private void inicializarVariaveis() {
         aluno = new Aluno();
-        tvNovoMatricula = findViewById(R.id.tvNovoMatricula);
+        tvLabelMatricula = findViewById(R.id.tvNovoMatricula);
         novoMatricula = findViewById(R.id.novoMatricula);
-        tvNome = findViewById(R.id.tvNome);
+        tvLabelNome = findViewById(R.id.tvNome);
         novoNome = findViewById(R.id.novoNome);
-        tvAno = findViewById(R.id.tvAno);
+        tvLabelAno = findViewById(R.id.tvAno);
         novoAno = findViewById(R.id.novoAno);
-        tvTurno = findViewById(R.id.tvTurno);
+        tvLabelTurno = findViewById(R.id.tvTurno);
         novoTurno = findViewById(R.id.novoTurno);
-        tvNomeDoPai = findViewById(R.id.tvNomeDoPai);
+        tvLabelNomeDoPai = findViewById(R.id.tvNomeDoPai);
         novoNomeDoPai = findViewById(R.id.novoNomeDoPai);
-        tvNomeDaMae = findViewById(R.id.tvNomeDaMae);
+        tvLabelNomeDaMae = findViewById(R.id.tvNomeDaMae);
         novoNomeDaMae = findViewById(R.id.novoNomeDaMae);
         bSalvar = findViewById(R.id.bSalvar);
         alunoRepository = new AlunoRepository(this);
@@ -59,22 +59,23 @@ public class AlunoActivity extends AppCompatActivity {
         preencherCampos(intent);
 
         bSalvar.setOnClickListener(view -> {
-            alunoRepository.delete(lerDadosPreenchidos().getMatricula());
-            if (alunoRepository.insert(lerDadosPreenchidos()) == -1) {
+            alunoRepository.deletarAluno(obterDadosPreenchidos().getMatricula());
+            if (alunoRepository.inserirAluno(obterDadosPreenchidos()) == -1) {
                 Toast.makeText(AlunoActivity.this, "Não foi possível salvar o aluno", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(AlunoActivity.this, "Aluno salvo com sucesso", Toast.LENGTH_SHORT).show();
             }
+            finish();
         });
     }
 
     private void preencherLabels() {
-        tvNovoMatricula.setText("Matrícula:");
-        tvNome.setText("Nome:");
-        tvAno.setText("Ano:");
-        tvTurno.setText("Turno:");
-        tvNomeDoPai.setText("Nome do Pai:");
-        tvNomeDaMae.setText("Nome da Mãe:");
+        tvLabelMatricula.setText("Matrícula:");
+        tvLabelNome.setText("Nome:");
+        tvLabelAno.setText("Ano:");
+        tvLabelTurno.setText("Turno:");
+        tvLabelNomeDoPai.setText("Nome do Pai:");
+        tvLabelNomeDaMae.setText("Nome da Mãe:");
         bSalvar.setVisibility(View.VISIBLE);
     }
 
@@ -88,7 +89,6 @@ public class AlunoActivity extends AppCompatActivity {
     }
 
     private void preencherComDadosDoAluno(Aluno aluno) {
-
         novoMatricula.setText(aluno.getMatricula());
         novoNome.setText(aluno.getNome());
         novoAno.setText(aluno.getAno());
@@ -111,7 +111,7 @@ public class AlunoActivity extends AppCompatActivity {
         preencherComDadosDoAluno(aluno);
     }
 
-    private Aluno lerDadosPreenchidos() {
+    private Aluno obterDadosPreenchidos() {
         aluno.setMatricula(novoMatricula.getText().toString());
         aluno.setNome(novoNome.getText().toString());
         aluno.setAno(novoAno.getText().toString());
@@ -122,7 +122,7 @@ public class AlunoActivity extends AppCompatActivity {
         return aluno;
     }
 
-    public void cadastrarTodosAlunos(){
+    public void cadastrarTodosAlunos() {
         Aluno aluno1 = new Aluno("5387948", "Eduarda Welter Braun", "3B", "Manhã", "Ademir Braun", "Rozane Welter", 0);
         Aluno aluno2 = new Aluno("5557234", "Estéfhany Regina Theisen Bernardi", "3B", "Manhã", "Mauro Bernardi", "Marisa Theisen", 0);
         Aluno aluno3 = new Aluno("5557235", "Gean Gustavo Kreuz", "3B", "Manhã", "Celso José Kreuz", "Marlise Henz Kreuz", 0);
@@ -133,16 +133,14 @@ public class AlunoActivity extends AppCompatActivity {
         Aluno aluno8 = new Aluno("5557261", "Eduardo Grun Deves", "3B", "Manhã", "Marino Antônio Deves", "Sueli Grün", 0);
         Aluno aluno9 = new Aluno("5557241", "Luan Carlos Gerlach", "3B", "Manhã", "Luis Carlos Gerlach", "Joseneia Maria Welter Gerlach", 0);
 
-        alunoRepository.insert(aluno1);
-        alunoRepository.insert(aluno2);
-        alunoRepository.insert(aluno3);
-        alunoRepository.insert(aluno4);
-        alunoRepository.insert(aluno5);
-        alunoRepository.insert(aluno6);
-        alunoRepository.insert(aluno7);
-        alunoRepository.insert(aluno8);
-        alunoRepository.insert(aluno9);
-
+        alunoRepository.inserirAluno(aluno1);
+        alunoRepository.inserirAluno(aluno2);
+        alunoRepository.inserirAluno(aluno3);
+        alunoRepository.inserirAluno(aluno4);
+        alunoRepository.inserirAluno(aluno5);
+        alunoRepository.inserirAluno(aluno6);
+        alunoRepository.inserirAluno(aluno7);
+        alunoRepository.inserirAluno(aluno8);
+        alunoRepository.inserirAluno(aluno9);
     }
-
 }

@@ -14,9 +14,9 @@
 
 
         <TextView
-            android:id="@+id/tvLogAluno"
+            android:id="@+id/tvRegistroEntradasAluno"
             android:layout_width="match_parent"
-            android:layout_height="685dp"
+            android:layout_height="729dp"
             android:paddingRight="2dp"
             android:textSize="16dp" />
 

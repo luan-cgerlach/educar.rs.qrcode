@@ -39,7 +39,7 @@
             android:exported="false" />
         />
         <activity
-            android:name=".activity.LogAlunoActivity"
+            android:name=".activity.RegEntradasAlunoActivity"
             android:exported="false" />
         />
     </application>
