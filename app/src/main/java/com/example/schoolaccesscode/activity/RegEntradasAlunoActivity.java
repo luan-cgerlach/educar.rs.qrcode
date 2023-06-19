@@ -48,7 +48,8 @@ public class RegEntradasAlunoActivity extends AppCompatActivity {
     private void preencherRegistroDeEntradas() {
         listaDeRegistros = alunoRepository.buscarTodosRegistrosDeEntrada();
 
-        for (RegistroAluno registro : listaDeRegistros) {
+        for (int i = listaDeRegistros.size() - 1; i >= 0; i--) {
+            RegistroAluno registro = listaDeRegistros.get(i);
             stringBuilderRegistro.append("\n" + registro.toString() + "\n");
         }
         tvRegistroEntradasAluno.append(stringBuilderRegistro);

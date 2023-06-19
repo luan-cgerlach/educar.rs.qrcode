@@ -109,22 +109,21 @@ public class AlunoRepository {
     }
 
     public List<RegistroAluno> buscarTodosRegistrosDeEntrada() {
-        List<RegistroAluno> listaAlunosLog = new ArrayList<>();
-        String orderBy = "data DESC";
-        Cursor cursor = databaseLog.query("log", null, null, null, null, null, orderBy);
+        List<RegistroAluno> listaRegistroAluno = new ArrayList<>();
+        Cursor cursor = databaseLog.query("log", null, null, null, null, null, null);
 
         if (cursor.moveToFirst()) {
             do {
                 String nome = cursor.getString(1);
-                String data = (cursor.getString(2));
+                String data = cursor.getString(2);
                 Integer entrou = cursor.getInt(3);
 
                 RegistroAluno alunolog = new RegistroAluno(nome, data, entrou);
-                listaAlunosLog.add(alunolog);
+                listaRegistroAluno.add(alunolog);
             } while (cursor.moveToNext());
         }
         cursor.close();
-        return listaAlunosLog;
+        return listaRegistroAluno;
     }
 
     public void deletarTodosRegistros() {

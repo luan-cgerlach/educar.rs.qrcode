@@ -117,6 +117,42 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void preencherDadosDoAluno(Aluno aluno) {
+        tvMatricula.setText("Matrícula:");
+        matricula.setText(aluno.getMatricula());
+        tvNome.setText("Nome:");
+        nome.setText(aluno.getNome());
+        tvAno.setText("Ano:");
+        ano.setText(aluno.getAno());
+        tvTurno.setText("Turno:");
+        turno.setText(aluno.getTurno());
+        tvNomeDoPai.setText("Nome do Pai:");
+        nomeDoPai.setText(aluno.getNomeDoPai());
+        tvNomeDaMae.setText("Nome da Mãe:");
+        nomeDaMae.setText(aluno.getNomeDaMae());
+        bAcesso.setVisibility(View.VISIBLE);
+        tvEditarAluno.setVisibility(View.VISIBLE);
+        tvExcluirAluno.setVisibility(View.VISIBLE);
+    }
+
+    private void limparTela() {
+        tvMatricula.setText("");
+        matricula.setText("");
+        tvNome.setText("");
+        nome.setText("");
+        tvAno.setText("");
+        ano.setText("");
+        tvTurno.setText("");
+        turno.setText("");
+        tvNomeDoPai.setText("");
+        nomeDoPai.setText("");
+        tvNomeDaMae.setText("");
+        nomeDaMae.setText("");
+        bAcesso.setVisibility(View.INVISIBLE);
+        tvEditarAluno.setVisibility(View.INVISIBLE);
+        tvExcluirAluno.setVisibility(View.INVISIBLE);
+    }
+
     private void criarRegistroDeEntrada() {
         aluno = buscarAlunoPorMatricula(matricula.getText().toString());
         Integer numeroDeEntradas = verificarSeAlunoEntrouOuSaiu(aluno);
@@ -236,40 +272,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void preencherDadosDoAluno(Aluno aluno) {
-        tvMatricula.setText("Matrícula:");
-        matricula.setText(aluno.getMatricula());
-        tvNome.setText("Nome:");
-        nome.setText(aluno.getNome());
-        tvAno.setText("Ano:");
-        ano.setText(aluno.getAno());
-        tvTurno.setText("Turno:");
-        turno.setText(aluno.getTurno());
-        tvNomeDoPai.setText("Nome do Pai:");
-        nomeDoPai.setText(aluno.getNomeDoPai());
-        tvNomeDaMae.setText("Nome da Mãe:");
-        nomeDaMae.setText(aluno.getNomeDaMae());
-        bAcesso.setVisibility(View.VISIBLE);
-        tvEditarAluno.setVisibility(View.VISIBLE);
-        tvExcluirAluno.setVisibility(View.VISIBLE);
-    }
 
-    private void limparTela() {
-        tvMatricula.setText("");
-        matricula.setText("");
-        tvNome.setText("");
-        nome.setText("");
-        tvAno.setText("");
-        ano.setText("");
-        tvTurno.setText("");
-        turno.setText("");
-        tvNomeDoPai.setText("");
-        nomeDoPai.setText("");
-        tvNomeDaMae.setText("");
-        nomeDaMae.setText("");
-        bAcesso.setVisibility(View.INVISIBLE);
-        tvEditarAluno.setVisibility(View.INVISIBLE);
-        tvExcluirAluno.setVisibility(View.INVISIBLE);
-    }
 }
 

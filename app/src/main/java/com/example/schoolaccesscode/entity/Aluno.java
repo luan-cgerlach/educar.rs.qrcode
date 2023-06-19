@@ -12,6 +12,7 @@ public class Aluno implements Parcelable {
     private String nomeDaMae;
     private Integer numeroDeEntradas;
 
+
     public Aluno() {
     }
 

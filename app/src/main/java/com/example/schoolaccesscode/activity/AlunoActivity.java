@@ -105,11 +105,6 @@ public class AlunoActivity extends AppCompatActivity {
         novoNomeDaMae.setText("");
     }
 
-    private void receberIntent(Intent intent) {
-        aluno = intent.getParcelableExtra("aluno");
-        preencherComDadosDoAluno(aluno);
-    }
-
     private Aluno obterDadosPreenchidos() {
         aluno.setMatricula(novoMatricula.getText().toString());
         aluno.setNome(novoNome.getText().toString());
