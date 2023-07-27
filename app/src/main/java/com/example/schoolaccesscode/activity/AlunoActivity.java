@@ -58,7 +58,7 @@ public class AlunoActivity extends AppCompatActivity {
         preencherCampos(intent);
 
         bSalvar.setOnClickListener(view -> {
-            alunoRepository.deletarAluno(obterDadosPreenchidos().getMatricula());
+            deletarAlunoDesatualizado(intent);
             if (alunoRepository.inserirAluno(obterDadosPreenchidos()) == -1) {
                 Toast.makeText(AlunoActivity.this, "Não foi possível salvar o aluno", Toast.LENGTH_SHORT).show();
             } else {
@@ -66,6 +66,13 @@ public class AlunoActivity extends AppCompatActivity {
             }
             finish();
         });
+    }
+
+    private void deletarAlunoDesatualizado(Intent intent){
+        Aluno alunoDesatualizado = intent.getParcelableExtra("aluno");
+        if (alunoDesatualizado != null) {
+            alunoRepository.deletarAluno(alunoDesatualizado.getMatricula());
+        }
     }
 
     private void preencherLabels() {

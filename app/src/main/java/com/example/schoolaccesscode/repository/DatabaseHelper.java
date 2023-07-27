@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "escola.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     private static final String CREATE_TABLE_ALUNO =
             "CREATE TABLE aluno ("
@@ -16,7 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + "turno TEXT,"
                     + "nome_do_pai TEXT,"
                     + "nome_da_mae TEXT,"
-                    + "estaNaEscola INTEGER"
+                    + "num_entradas INTEGER"
                     + ")";
 
     private static final String CREATE_TABLE_LOG =
@@ -24,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + "id INTEGER PRIMARY KEY,"
                     + "nome TEXT,"
                     + "data TEXT,"
-                    + "estaNaEscola INTEGER"
+                    + "num_entradas INTEGER"
                     + ")";
 
     public DatabaseHelper(Context context) {
