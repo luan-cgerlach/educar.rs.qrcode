@@ -81,7 +81,7 @@ public class AlunoRepository {
         values.put("turno", aluno.getTurno());
         values.put("nome_do_pai", aluno.getNomeDoPai());
         values.put("nome_da_mae", aluno.getNomeDaMae());
-        values.put("entrou", aluno.getNumeroDeEntradas());
+        values.put("num_entradas", aluno.getNumeroDeEntradas());
         String[] selectionArgs = {aluno.getMatricula()};
         return database.update("aluno", values, "matricula = ?", selectionArgs);
     }
