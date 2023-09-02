@@ -3,6 +3,9 @@ package com.example.schoolaccesscode.activity;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -23,10 +26,16 @@ import com.example.schoolaccesscode.entity.Aluno;
 import com.example.schoolaccesscode.entity.RegistroAluno;
 import com.example.schoolaccesscode.repository.AlunoRepository;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final UUID BT_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+
     private static final int QR_CODE_REQUEST_CODE = 1;
     private Aluno aluno;
     private AlunoRepository alunoRepository;
@@ -47,6 +56,11 @@ public class MainActivity extends AppCompatActivity {
     private Button bScanner;
     private Button bAcesso;
     DateTimeFormatter formatoBrasileiro;
+
+    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothDevice arduinoDevice;
+    private BluetoothSocket bluetoothSocket;
+    private OutputStream outputStream;
 
     private void inicializarVariaveis() {
         bScanner = findViewById(R.id.bScanner);
@@ -75,7 +89,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         inicializarVariaveis();
+
         bAcesso.setVisibility(View.INVISIBLE);
         tvEditarAluno.setVisibility(View.INVISIBLE);
         tvExcluirAluno.setVisibility(View.INVISIBLE);
@@ -111,6 +127,13 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 preencherDadosDoAluno(alunoPorId);
                 criarRegistroDeEntrada();
+                try {
+                    sendBluetoothData("ABRIR");
+                    Thread.sleep(5000);
+                    sendBluetoothData("FECHAR");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -269,6 +292,69 @@ public class MainActivity extends AppCompatActivity {
             return null;
         } else {
             return alunoRepository.buscarAlunoPorId(matricula);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (!bluetoothAdapter.isEnabled()) {
+            Toast.makeText(this, "Ative o Bluetooth primeiro.", Toast.LENGTH_SHORT).show();
+        } else {
+            // Substitua "HC-06" pelo nome do seu módulo Bluetooth
+            arduinoDevice = getBluetoothDeviceByName("HC-06");
+
+            if (arduinoDevice != null) {
+                connectToArduino();
+            } else {
+                Toast.makeText(this, "Dispositivo Arduino não encontrado.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private BluetoothDevice getBluetoothDeviceByName(String name) {
+        for (BluetoothDevice device : bluetoothAdapter.getBondedDevices()) {
+            if (device.getName().equals(name)) {
+                return device;
+            }
+        }
+        return null;
+    }
+
+    private void connectToArduino() {
+        try {
+            bluetoothSocket = arduinoDevice.createRfcommSocketToServiceRecord(BT_UUID);
+            bluetoothSocket.connect();
+            outputStream = bluetoothSocket.getOutputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Falha na conexão com o Arduino", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void sendBluetoothData(String message) {
+        if (outputStream != null) {
+            try {
+                outputStream.write(message.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Falha ao enviar a mensagem", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, "Conecte ao Arduino primeiro", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (bluetoothSocket != null) {
+            try {
+                bluetoothSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
