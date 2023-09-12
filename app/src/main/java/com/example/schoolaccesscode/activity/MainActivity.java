@@ -124,12 +124,19 @@ public class MainActivity extends AppCompatActivity {
 
             if (alunoPorId == null) {
                 Toast.makeText(MainActivity.this, "Aluno não cadastrado!!!", Toast.LENGTH_LONG).show();
+                try {
+                    sendBluetoothData("X");
+                    sendBluetoothData("RED");
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             } else {
                 preencherDadosDoAluno(alunoPorId);
                 criarRegistroDeEntrada();
                 try {
                     sendBluetoothData("ABRIR");
-                    Thread.sleep(5000);
+                    Thread.sleep(3000);
                     sendBluetoothData("FECHAR");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -329,7 +336,6 @@ public class MainActivity extends AppCompatActivity {
             outputStream = bluetoothSocket.getOutputStream();
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(this, "Falha na conexão com o Arduino", Toast.LENGTH_SHORT).show();
         }
     }
 
